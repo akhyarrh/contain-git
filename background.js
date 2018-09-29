@@ -115,7 +115,7 @@ function shouldCancelEarly (tab, options) {
 }
 
 function generateGitHostREs () {
-  for (let gitDomain of GIT_DOMAINS) {
+  for (let gitDomain of GITHUB_DOMAINS) {
     gitHostREs.push(new RegExp(`^(.*\\.)?${gitDomain}$`));
   }
 }
@@ -129,14 +129,14 @@ async function clearGitCookies () {
 
   let macAssignments = [];
   if (macAddonEnabled) {
-    const promises = GIT_DOMAINS.map(async gitDomain => {
+    const promises = GITHUB_DOMAINS.map(async gitDomain => {
       const assigned = await getMACAssignment(`https://${gitDomain}/`);
       return assigned ? gitDomain : null;
     });
     macAssignments = await Promise.all(promises);
   }
 
-  GIT_DOMAINS.map(async gitDomain => {
+  GITHUB_DOMAINS.map(async gitDomain => {
     const gitCookieUrl = `https://${gitDomain}/`;
 
     // dont clear cookies for gitDomain if mac assigned (with or without www.)
